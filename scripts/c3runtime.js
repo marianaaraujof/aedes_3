@@ -3351,6 +3351,43 @@ C3.CanvasToBlob(canvas)).then(blob=>{const url=URL.createObjectURL(blob);const c
 }
 
 {
+'use strict';const C3=self.C3;const DOM_COMPONENT_ID="button";C3.Plugins.Button=class ButtonPlugin extends C3.SDKDOMPluginBase{constructor(opts){super(opts,DOM_COMPONENT_ID);this.AddElementMessageHandler("click",(sdkInst,e)=>sdkInst._OnClick(e))}Release(){super.Release()}};
+
+}
+
+{
+'use strict';const C3=self.C3;C3.Plugins.Button.Type=class ButtonType extends C3.SDKTypeBase{constructor(objectClass){super(objectClass)}Release(){super.Release()}OnCreate(){}};
+
+}
+
+{
+'use strict';const C3=self.C3;const C3X=self.C3X;const TYPE=0;const TEXT=1;const TOOLTIP=2;const INITIALLY_VISIBLE=3;const ENABLE=4;const AUTO_FONT_SIZE=5;const CHECKED=6;const ID=7;const DOM_COMPONENT_ID="button";
+C3.Plugins.Button.Instance=class ButtonInstance extends C3.SDKDOMInstanceBase{constructor(inst,properties){super(inst,DOM_COMPONENT_ID);this._text="OK";this._isCheckbox=false;this._isChecked=false;this._title="";this._id="";this._isEnabled=true;this._autoFontSize=true;if(properties){this._isCheckbox=properties[TYPE]===1;this._text=properties[TEXT];this._title=properties[TOOLTIP];this.GetWorldInfo().SetVisible(properties[INITIALLY_VISIBLE]);this._isEnabled=properties[ENABLE];this._autoFontSize=properties[AUTO_FONT_SIZE];
+this._isChecked=properties[CHECKED];this._id=properties[ID]}this.CreateElement({"id":this._id})}Release(){super.Release()}GetElementState(){return{"text":this._text,"isCheckbox":this._isCheckbox,"isChecked":this._isChecked,"title":this._title,"isVisible":this.GetWorldInfo().IsVisible(),"isEnabled":this._isEnabled}}async _OnClick(e){this._isChecked=e["isChecked"];this.GetScriptInterface().dispatchEvent(C3.New(C3.Event,"click",true));await this.TriggerAsync(C3.Plugins.Button.Cnds.OnClicked)}_SetText(text){if(this._text===
+text)return;this._text=text;this.UpdateElementState()}_GetText(){return this._text}_SetTooltip(title){if(this._title===title)return;this._title=title;this.UpdateElementState()}_GetTooltip(){return this._title}_SetEnabled(e){e=!!e;if(this._isEnabled===e)return;this._isEnabled=e;this.UpdateElementState()}_IsEnabled(){return this._isEnabled}_SetChecked(c){if(!this._isCheckbox)return;c=!!c;if(this._isChecked===c)return;this._isChecked=c;this.UpdateElementState()}_IsChecked(){return this._isChecked}Draw(renderer){}SaveToJson(){return{"text":this._text,
+"checked":this._isChecked,"title":this._title,"enabled":this._isEnabled}}LoadFromJson(o){this._text=o["text"];this._isChecked=o["checked"];this._title=o["title"];this._isEnabled=o["enabled"];this.UpdateElementState()}GetPropertyValueByIndex(index){switch(index){case TEXT:return this._text;case TOOLTIP:return this._title;case ENABLE:return this._isEnabled;case AUTO_FONT_SIZE:return this._autoFontSize;case CHECKED:return this._isChecked;case ID:return this._id}}SetPropertyValueByIndex(index,value){switch(index){case TEXT:if(this._text===
+value)return;this._text=value;this.UpdateElementState();break;case TOOLTIP:if(this._title===value)return;this._title=value;this.UpdateElementState();break;case ENABLE:if(this._isEnabled===!!value)return;this._isEnabled=!!value;this.UpdateElementState();break;case AUTO_FONT_SIZE:this._autoFontSize=!!value;break;case CHECKED:if(this._isChecked===!!value)return;this._isChecked=!!value;this.UpdateElementState();break;case ID:if(this._id===!!value)return;this._id=value;this.UpdateElementState();break}}GetDebuggerProperties(){const Acts=
+C3.Plugins.Button.Acts;const prefix="plugins.button";return[{title:prefix+".name",properties:[{name:prefix+".properties.text.name",value:this._text,onedit:v=>this.CallAction(Acts.SetText,v)},{name:prefix+".properties.enabled.name",value:this._isEnabled,onedit:v=>this.CallAction(Acts.SetEnabled,v)},{name:prefix+".properties.checked.name",value:this._isChecked,onedit:v=>this.CallAction(Acts.SetChecked,v)}]}]}GetScriptInterfaceClass(){return self.IButtonInstance}};const map=new WeakMap;
+self.IButtonInstance=class IButtonInstance extends self.IDOMInstance{constructor(){super();map.set(this,self.IInstance._GetInitInst().GetSdkInstance())}set text(str){C3X.RequireString(str);map.get(this)._SetText(str)}get text(){return map.get(this)._GetText()}set tooltip(str){C3X.RequireString(str);map.get(this)._SetTooltip(str)}get tooltip(){return map.get(this)._GetTooltip()}set isEnabled(e){map.get(this)._SetEnabled(e)}get isEnabled(){return map.get(this)._IsEnabled()}set isChecked(c){map.get(this)._SetChecked(c)}get isChecked(){return map.get(this)._IsChecked()}};
+
+}
+
+{
+'use strict';const C3=self.C3;C3.Plugins.Button.Cnds={OnClicked(){return true},IsChecked(){return this._isChecked},CompareText(str,caseSensitive){if(caseSensitive)return this._text===str;else return C3.equalsNoCase(this._text,str)}};
+
+}
+
+{
+'use strict';const C3=self.C3;C3.Plugins.Button.Acts={SetText(text){this._SetText(text)},SetTooltip(title){this._SetTooltip(title)},SetChecked(c){this._SetChecked(c!==0)},ToggleChecked(){if(!this._isCheckbox)return;this._isChecked=!this._isChecked;this.UpdateElementState()}};
+
+}
+
+{
+'use strict';const C3=self.C3;C3.Plugins.Button.Exps={Text(){return this._text}};
+
+}
+
+{
 'use strict';const C3=self.C3;C3.Behaviors.Pin=class PinBehavior extends C3.SDKBehaviorBase{constructor(opts){super(opts)}Release(){super.Release()}};
 
 }
@@ -3445,8 +3482,10 @@ self.C3_GetObjectRefTable = function () {
 		C3.Behaviors.Pin,
 		C3.Behaviors.DragnDrop,
 		C3.Plugins.Mouse,
+		C3.Plugins.Button,
 		C3.Plugins.System.Cnds.OnLayoutStart,
 		C3.Behaviors.Pin.Acts.PinByProperties,
+		C3.Plugins.Button.Acts.SetCSSStyle,
 		C3.Plugins.Sprite.Acts.SetInstanceVar,
 		C3.Plugins.Sprite.Exps.Y,
 		C3.Plugins.Sprite.Exps.Height,
@@ -3458,10 +3497,15 @@ self.C3_GetObjectRefTable = function () {
 		C3.Plugins.System.Acts.ScrollY,
 		C3.Plugins.Mouse.Cnds.OnWheel,
 		C3.Plugins.Sprite.Cnds.IsOverlapping,
-		C3.Plugins.System.Acts.Wait,
-		C3.Behaviors.DragnDrop.Acts.SetEnabled,
+		C3.Plugins.Sprite.Acts.SetBoolInstanceVar,
 		C3.Plugins.Sprite.Acts.SetPos,
-		C3.Plugins.Sprite.Acts.SetVisible
+		C3.Plugins.Button.Cnds.OnClicked,
+		C3.Plugins.Button.Acts.SetEnabled,
+		C3.Plugins.Mouse.Cnds.OnObjectClicked,
+		C3.Behaviors.DragnDrop.Acts.SetEnabled,
+		C3.Plugins.Sprite.Acts.SetAnimFrame,
+		C3.Plugins.System.Cnds.Else,
+		C3.Plugins.Sprite.Acts.MoveToLayer
 	];
 };
 self.C3_JsPropNameTable = [
@@ -3537,11 +3581,17 @@ self.C3_JsPropNameTable = [
 	{scroll: 0},
 	{barra: 0},
 	{Mouse: 0},
+	{A11: 0},
 	{dropa11: 0},
+	{A12: 0},
 	{dropa12: 0},
+	{A13: 0},
 	{dropa13: 0},
+	{A21: 0},
 	{dropa21: 0},
+	{A22: 0},
 	{dropa22: 0},
+	{A23: 0},
 	{dropa23: 0},
 	{dropb1: 0},
 	{dropb2: 0},
@@ -3568,7 +3618,32 @@ self.C3_JsPropNameTable = [
 	{texto6: 0},
 	{texto7: 0},
 	{texto8: 0},
-	{texto9: 0}
+	{texto9: 0},
+	{g1: 0},
+	{fundo_texto_gerado: 0},
+	{botao1: 0},
+	{botao2: 0},
+	{botao3: 0},
+	{botao4: 0},
+	{botao5: 0},
+	{botao6: 0},
+	{botao7: 0},
+	{botao8: 0},
+	{botao9: 0},
+	{botao10: 0},
+	{botao11: 0},
+	{botao12: 0},
+	{botao13: 0},
+	{botao14: 0},
+	{botao15: 0},
+	{botao16: 0},
+	{botao17: 0},
+	{botao18: 0},
+	{botao19: 0},
+	{botao20: 0},
+	{botao21: 0},
+	{validacao: 0},
+	{verificat: 0}
 ];
 }
 
@@ -3669,6 +3744,8 @@ function or(l, r)
 }
 
 self.C3_ExpressionFuncs = [
+		() => "border",
+		() => "2px solid #2ec4b6",
 		p => {
 			const n0 = p._GetNode(0);
 			const n1 = p._GetNode(1);
@@ -3677,7 +3754,7 @@ self.C3_ExpressionFuncs = [
 		p => {
 			const n0 = p._GetNode(0);
 			const n1 = p._GetNode(1);
-			return () => (500 / (n0.ExpInstVar() - n1.ExpInstVar()));
+			return () => (640 / (n0.ExpInstVar() - n1.ExpInstVar()));
 		},
 		p => {
 			const n0 = p._GetNode(0);
@@ -3713,7 +3790,13 @@ self.C3_ExpressionFuncs = [
 			const n3 = p._GetNode(3);
 			return () => C3.clamp((n0.ExpObject() - (10 / n1.ExpInstVar())), n2.ExpInstVar(), n3.ExpInstVar());
 		},
-		() => 1
+		() => 540,
+		() => 120,
+		() => 250,
+		() => 0,
+		() => 870,
+		() => 900,
+		() => 3
 ];
 
 
